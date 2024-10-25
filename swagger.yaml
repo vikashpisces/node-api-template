@@ -1,0 +1,120 @@
+swagger: "2.0"
+info:
+  title: "Node Based API"
+  description: "This is node based API"
+  version: '1.0.0'
+host: 'localhost:3002'
+basePath: '/api/v1'
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /product:
+    get:
+      summary: Returns all the products available in the inventory
+      description: Returns all the products available in the inventory
+      security:
+        - Bearer: []
+      parameters:
+        - name: skip
+          in: query
+          description: No of record to skip on pagination
+          type: number
+          required: false
+        - name: limit
+          in: query
+          description: No of records in the pagination
+          type: number
+          required: false
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Products fetched successfully
+          schema:
+            $ref: '#/definitions/apiResponse'
+        400:
+          description: Invalid fields
+        401:
+          description: 'Unauthorized access'
+        500:
+          description: Internal server error
+  /product/{id}:
+    get:
+      summary: Get a particular product by its id
+      description: Get a particular product by its id
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: path
+          type: string
+          description: A product id
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Product fetched successfully
+          schema:
+            $ref: '#/definitions/apiResponse'
+        400:
+          description: Invalid fields
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+    put:
+      summary: Update a particular product 
+      description: Update a particular product 
+      security:
+      - Bearer: []
+      parameters:
+        - name: id
+          in: path
+          description: A product ID
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Product payload being updated
+          required: true
+          type: object
+          schema:
+            $ref: '#/definitions/Product'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Product fetched successfully
+          schema:
+            $ref: '#/definitions/apiResponse'
+        400:
+          description: Invalid fields
+        401:
+          description: Unauthorized access
+        500:
+          description: Internal server error
+  /user:
+definitions:
+  apiResponse:
+    type: object
+    properties:
+      status:
+        type: number
+      message:
+        type: string
+      body:
+        type: object
+  Product:
+    type: object
+    properties:
+      name:
+        type: string
+      brand:
+        type: string
+      price:
+        type: number
